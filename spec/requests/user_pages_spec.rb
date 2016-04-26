@@ -60,6 +60,12 @@ describe "User pages" do
         it { should have_selector('div.alert.alert-success', text: 'Welcome') }
         it { should have_selector('h1',    text: user.name) }
         it { should have_selector('img',   {alt: user.name, class: "gravatar"}) }
+        it { should have_link('Sign out') }
+
+        describe "and refreshing the page" do
+          before { visit user_path(user) }
+          it { should_not have_selector('div.alert.alert-success') }
+        end
       end
     end
   end
