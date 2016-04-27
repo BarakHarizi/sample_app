@@ -45,7 +45,7 @@ describe "User pages" do
         it "should be able to delete another user" do
           expect { click_link('delete') }.to change(User, :count).by(-1)
         end
-        it { should_not have_link('delete', href: user_path(admin)) }
+        it { should_not have_link('delete', href: user_path(admin)) } 
       end
     end
   end
@@ -149,4 +149,13 @@ describe "User pages" do
       specify { user.reload.email.should == new_email }
     end
   end
+
+  describe "admins" do
+  let(:admin) { FactoryGirl.create(:admin) }
+
+   it "should not be able to delete themselves" do
+     sign_in admin
+     expect { delete user_path(admin), {}}.not_to change(User, :count)
+   end
+ end
 end
