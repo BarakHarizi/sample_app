@@ -1,21 +1,22 @@
 <script>
 function updateCountdown() {
     // 140 is the max message length
-    var remaining = 140 - jQuery('#micropost_content').val().length;
+    var remaining = 140 - jQuery('.limited_textarea').val().length;
     jQuery('.countdown').text(remaining + ' characters remaining.');
 }
 
 jQuery(document).ready(function($) {
     updateCountdown();
-    $('#micropost_content').change(updateCountdown);
-    $('#micropost_content').keyup(updateCountdown);
+    $('.limited_textarea').change(updateCountdown);
+    $('.limited_textarea').keyup(updateCountdown);
+    $('.limited_textarea').keydown(updateCountdown);
 });
 </script>
 
 <%= form_for(@micropost) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <div class="field">
-    <%= f.text_area :content, placeholder: "Compose new micropost..." %>
+    <%= f.text_area :content, placeholder: "Compose new micropost...", class: "limited_textarea" %>
     <span class="countdown"></span>
   </div>
   <%= f.submit "Post", class: "btn btn-large btn-primary" %>
