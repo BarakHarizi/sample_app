@@ -144,4 +144,18 @@ describe "Authentication" do
       specify { response.should redirect_to(root_url) }
     end
   end
+
+  describe "for signed users" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:other_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
+    before do 
+      3.times { FactoryGirl.create(:micropost, user: other_user) }
+      sign_in user
+    end
+
+    describe "accessing another user's page" do
+      before { user_path(other_user) }
+      it { should_not have_link('delete', href: micropost_path(other_user.microposts.first)) }
+    end
+  end
 end
